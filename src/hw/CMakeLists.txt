@@ -1,4 +1,8 @@
-cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
-
 add_subdirectory(spi)
 add_subdirectory(uart)
+
+function_add_interface_library(
+    NAME drivers
+    DEPENDENCIES
+        uartdriver
+)
