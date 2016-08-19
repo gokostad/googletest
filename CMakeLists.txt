@@ -4,12 +4,6 @@ cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 # Define project name
 project(mcufs_proj CXX C)
 
-# If the variable AMBULATORY_COMMON_CMAKE_FILE is set read common definitions
-# from Common.cmake. This must be done after defining the project()
-if(AMBULATORY_COMMON_CMAKE_FILE)
-  include(${AMBULATORY_COMMON_CMAKE_FILE})
-endif()
-
 # Add a static library target
 add_library(mcufs STATIC
     src/romfs.cpp
@@ -45,6 +39,8 @@ install(TARGETS mcufs
   ARCHIVE DESTINATION lib
   PUBLIC_HEADER DESTINATION include/romfs
 )
+
+add_subdirectory(src)
 
 if ("${DEVICE_PLATFORM}" STREQUAL "DESKTOP")
     add_subdirectory(tests)
