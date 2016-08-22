@@ -4,6 +4,7 @@ set -e
 set -u
 
 VERBOSE_MODE=""
+CLEAN_MODE=0
 
 usage()
 {
@@ -14,6 +15,7 @@ Usage: $0 [parameters]
 Parameters:
     --toolchain     [gcc | clang] defines which compiler toolchain will be used
     --target        [app | test] defines the build target board
+    --clean         Clean directory
     --help          Print this information
     --verbose       Enable verbose mode
 
@@ -54,6 +56,9 @@ do
             TARGET="$2"
             shift
             ;;
+        --clean)
+            CLEAN_MODE=1
+            ;;
         --verbose)
             VERBOSE_MODE="VERBOSE=1"
             ;;
@@ -82,7 +87,7 @@ else
     ERROR_MESSAGE="No toolchain was defined! Please try again."
 fi
 
-if [ -n "${ERROR_MESSAGE}" ]; then 
+if [ -n "${ERROR_MESSAGE}" ]; then
     echo ${ERROR_MESSAGE}
     usage
     exit 1
@@ -107,9 +112,11 @@ TOOLCHAIN_OPTION=""
 
 # Run CMake with resolved arguments
 
+if [ $CLEAN_MODE -eq 1 ]; then
 # Clean the build directory
 echo "Setting up clean build directory."
 clean ${BUILD_DIR}
+fi
 
 CMAKE_OPTIONS="${TOOLCHAIN_OPTION} ${CMAKE_OPTIONS}"
 
@@ -122,4 +129,7 @@ echo ""
 # Create build environment
 cmake ${CMAKE_OPTIONS} -G "Unix Makefiles" ${CMAKE_BASE_DIR}
 
+mingw32-make
+
 cd ${CMAKE_BASE_DIR}
+

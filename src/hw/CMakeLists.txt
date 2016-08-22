@@ -5,4 +5,5 @@ function_add_interface_library(
     NAME drivers
     DEPENDENCIES
         uartdriver
+        spidriver
 )

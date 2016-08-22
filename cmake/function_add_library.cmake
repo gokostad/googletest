@@ -1,3 +1,5 @@
+include(CMakeParseArguments)
+
 # function can be called with following syntax
 # function_add_library(option1 option2 NAME libA FILES file1.c file2.c INCLUDES inc1.h inc2.h INCLUDES_PRIVATE incp1.h incp2.have
 #                      DEPENDENCIES dep1 dep2 PUBLIC_COMPILE_DEFINITIONS cd1 cd2 cd3 PRIVATE_COMPILE_DEFINITIONS pcd1)
@@ -13,7 +15,7 @@ function(function_add_library)
     endif()
 
     add_library(${function_add_library_NAME} EXCLUDE_FROM_ALL ${function_add_library_FILES})
-    
+
     target_include_directories(${function_add_library_NAME} PUBLIC ${function_add_library_INCLUDES})
     target_include_directories(${function_add_library_NAME} PRIVATE ${function_add_library_INCLUDES_PRIVATE})
     target_compile_definitions(${function_add_library_NAME} PUBLIC ${function_add_library_PUBLIC_COMPILE_DEFINITIONS})
@@ -31,9 +33,9 @@ function(function_add_interface_library)
     if ("${function_add_interface_library_NAME}" STREQUAL "")
         message(FATAL_ERROR "NAME parameter is required")
     endif()
-    
+
     add_library(${function_add_interface_library_NAME} INTERFACE)
-    
+
     target_include_directories(${function_add_interface_library_NAME} INTERFACE
         ${function_add_interface_library_INCLUDES})
     target_link_libraries(${function_add_interface_library_NAME} INTERFACE

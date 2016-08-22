@@ -1,4 +1,3 @@
-# CMakeLists.txt for building the mcufs library.
 cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 
 project(cmakeandgogletestexample VERSION 0.0.1)
