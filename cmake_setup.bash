@@ -77,14 +77,25 @@ done
 
 TOOLCHAIN_FILE=""
 ERROR_MESSAGE=""
-if [ "${TOOLCHAIN,,}" == "gcc" ]; then
+if [ "${TOOLCHAIN}" == "gcc" ]; then
     export CC=gcc
     export CXX=g++
-elif [ "${TOOLCHAIN,,}" == "clang" ]; then
+elif [ "${TOOLCHAIN}" == "clang" ]; then
     export CC=clang
     export CXX=clang++
 else
     ERROR_MESSAGE="No toolchain was defined! Please try again."
+fi
+
+if [ -n "${ERROR_MESSAGE}" ]; then
+    echo ${ERROR_MESSAGE}
+    usage
+    exit 1
+fi
+
+ERROR_MESSAGE=""
+if [ "${TARGET}" != "app" -a "${TARGET}" != "test" ]; then
+    ERROR_MESSAGE="No target was defined! Please try again."
 fi
 
 if [ -n "${ERROR_MESSAGE}" ]; then
@@ -113,23 +124,49 @@ TOOLCHAIN_OPTION=""
 # Run CMake with resolved arguments
 
 if [ $CLEAN_MODE -eq 1 ]; then
-# Clean the build directory
-echo "Setting up clean build directory."
-clean ${BUILD_DIR}
+    # Clean the build directory
+    echo "Setting up clean build directory."
+    clean ${BUILD_DIR}
 fi
 
 CMAKE_OPTIONS="${TOOLCHAIN_OPTION} ${CMAKE_OPTIONS}"
 
+# Create build directory if not exist
+
+if [ ! -d "$BUILD_DIR" ]; then
+    mkdir $BUILD_DIR
+fi
+if [ ! -d "$BUILD_DIR" ]; then
+    echo "Can not create build directory: " ${BUILD_DIR}
+    exit 1
+fi
+
+
 cd ${BUILD_DIR}
 
-echo "Cmake options: " ${CMAKE_OPTIONS}
-echo "Cmake base dir: " ${CMAKE_BASE_DIR}
-echo ""
-
 # Create build environment
-cmake ${CMAKE_OPTIONS} -G "Unix Makefiles" ${CMAKE_BASE_DIR}
+if [ "${TARGET}" == "test" ]; then
 
-mingw32-make
+    CMAKE_OPTIONS="${CMAKE_OPTIONS} -DCMAKE_BUILD_TYPE=Debug -Dtest=ON"
+
+    echo "Cmake options: " ${CMAKE_OPTIONS}
+    echo "Cmake base dir: " ${CMAKE_BASE_DIR}
+    echo ""
+
+    cmake ${CMAKE_OPTIONS} -G "Unix Makefiles" ${CMAKE_BASE_DIR}
+
+    mingw32-make  && ctest --no-compress-output -T Test
+
+else
+
+    echo "Cmake options: " ${CMAKE_OPTIONS}
+    echo "Cmake base dir: " ${CMAKE_BASE_DIR}
+    echo ""
+
+    cmake ${CMAKE_OPTIONS} -G "Unix Makefiles" ${CMAKE_BASE_DIR}
+
+    mingw32-make
+
+fi
 
 cd ${CMAKE_BASE_DIR}
-
