@@ -111,10 +111,10 @@ echo "Target: ${TARGET}"
 BUILD_DIR_MAIN=Build
 if [ ! -d "$BUILD_DIR_MAIN" ]; then
     mkdir $BUILD_DIR_MAIN
-fi
-if [ ! -d "$BUILD_DIR_MAIN" ]; then
-    echo "Can not create build directory: " ${BUILD_DIR_MAIN}
-    exit 1
+    if [ ! -d "$BUILD_DIR_MAIN" ]; then
+        echo "Can not create build directory: " ${BUILD_DIR_MAIN}
+        exit 1
+    fi
 fi
 
 BUILD_DIR_PREFIX=$BUILD_DIR_MAIN/cmake_shell
