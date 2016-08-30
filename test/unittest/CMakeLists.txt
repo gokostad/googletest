@@ -39,26 +39,45 @@ download_project(
   CMAKE_ARGS ${GMOCK_CMAKE_ARGS}
 )
 
+link_directories("${gmock_BINARY_DIR}")
+set(GMOCK_LIBRARIES gmock gmock_main)
+
 # Prevent GoogleTest from overriding our compiler/linker options
 # when building with Visual Studio
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
+message(STATUS ">---- unittest/CmakeLists.txt ---")
+message(STATUS "gtest_SOURCE_DIR: ${gtest_SOURCE_DIR}")
+message(STATUS "gtest_BINARY_DIR: ${gtest_BINARY_DIR}")
+message(STATUS "googletest_SOURCE_DIR: ${googletest_SOURCE_DIR}")
+message(STATUS "googletest_BINARY_DIR: ${googletest_BINARY_DIR}")
+message(STATUS "           ")
+message(STATUS "gmock_SOURCE_DIR: ${gmock_SOURCE_DIR}")
+message(STATUS "gmock_BINARY_DIR: ${gmock_BINARY_DIR}")
+message(STATUS "googlemock_SOURCE_DIR: ${googlemock_SOURCE_DIR}")
+message(STATUS "googlemock_BINARY_DIR: ${googlemock_BINARY_DIR}")
+message(STATUS "           ")
+message(STATUS "<---- unittest/CmakeLists.txt ---")
+
 add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR})
 
-# When using CMake 2.8.11 or later, header path dependencies
-# are automatically added to the gtest and gmock targets.
-# For earlier CMake versions, we have to explicitly add the
-# required directories to the header search path ourselves.
-if (CMAKE_VERSION VERSION_LESS 2.8.11)
-   include_directories("${gtest_SOURCE_DIR}/include"
-                        "${gmock_SOURCE_DIR}/include")
-   include_directories(${googletest_SOURCE_DIR}/include
-                       ${googletest_SOURCE_DIR}/gtest/include)
-endif()
-
+include_directories(${gtest_SOURCE_DIR}/include  ${gmock_SOURCE_DIR}/include)
 
 #add_subdirectory(stubs)
 add_subdirectory(processing)
+
+message(STATUS ">---- unittest/CmakeLists.txt ---")
+message(STATUS "gtest_SOURCE_DIR: ${gtest_SOURCE_DIR}")
+message(STATUS "gtest_BINARY_DIR: ${gtest_BINARY_DIR}")
+message(STATUS "googletest_SOURCE_DIR: ${googletest_SOURCE_DIR}")
+message(STATUS "googletest_BINARY_DIR: ${googletest_BINARY_DIR}")
+message(STATUS "           ")
+message(STATUS "gmock_SOURCE_DIR: ${gmock_SOURCE_DIR}")
+message(STATUS "gmock_BINARY_DIR: ${gmock_BINARY_DIR}")
+message(STATUS "googlemock_SOURCE_DIR: ${googlemock_SOURCE_DIR}")
+message(STATUS "googlemock_BINARY_DIR: ${googlemock_BINARY_DIR}")
+message(STATUS "           ")
+message(STATUS "<---- unittest/CmakeLists.txt ---")
 
 foreach(testSuite ${TEST_SUITES})
   add_executable(${testSuite} "${testSuite}.cpp")

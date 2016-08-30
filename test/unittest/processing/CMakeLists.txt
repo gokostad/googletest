@@ -17,7 +17,8 @@ function(add_unit_test testSuite)
   endif ()
   target_include_directories(${testSuite}
     PUBLIC
-    ${PROJECT_SOURCE_DIR}/Include
+    ${PROJECT_SOURCE_DIR}/src/hw/spi
+    ${PROJECT_SOURCE_DIR}/src/hw/uart
     ${PROJECT_SOURCE_DIR}/src/processing
     ${PROJECT_SOURCE_DIR}/src/ui
     ${PROJECT_SOURCE_DIR}/test
@@ -26,5 +27,5 @@ function(add_unit_test testSuite)
 endfunction()
 
 add_unit_test(TestProcessing
-  ${PROJECT_SOURCE_DIR}/src/processing/processing.cpp
+#  ${PROJECT_SOURCE_DIR}/src/processing/processing.cpp
 )

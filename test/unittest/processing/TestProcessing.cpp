@@ -6,7 +6,8 @@ using namespace ::testing;
 class TestProcessing : public Test
 {
 public:
-    ~TestProcessing();
+    TestProcessing() {}
+    virtual ~TestProcessing() {}
 
 protected:
     virtual void SetUp()
