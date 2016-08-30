@@ -4,22 +4,12 @@ project(${DL_ARGS_PROJ}-download NONE)
 
 include(ExternalProject)
 
-message(STATUS ">--- downloadproject.CMakeList.cmake.in ---")
-message(STATUS "DL_ARGS_CMAKE_ARGS: ${DL_ARGS_CMAKE_ARGS}")
-message(STATUS "DL_ARGS_SOURCE_DIR: ${DL_ARGS_SOURCE_DIR}")
-message(STATUS "DL_ARGS_BINARY_DIR: ${DL_ARGS_BINARY_DIR}")
-
-
 ExternalProject_Add(${DL_ARGS_PROJ}-download
                     ${DL_ARGS_UNPARSED_ARGUMENTS}
                     SOURCE_DIR          "${DL_ARGS_SOURCE_DIR}"
                     BINARY_DIR          "${DL_ARGS_BINARY_DIR}"
                     CONFIGURE_COMMAND   ""
-                    CMAKE_ARGS          "${DL_ARGS_CMAKE_ARGS}"
                     BUILD_COMMAND       ""
                     INSTALL_COMMAND     ""
                     TEST_COMMAND        ""
 )
-
-message(STATUS "<--- downloadproject.CMakeList.cmake.in ---")
-

@@ -155,27 +155,38 @@ cd ${BUILD_DIR}
 
 # Create build environment
 if [ "${TARGET}" == "test" ]; then
-
     CMAKE_OPTIONS="${CMAKE_OPTIONS} -DCMAKE_BUILD_TYPE=Debug -Dtest=ON"
 
     echo "Cmake options: " ${CMAKE_OPTIONS}
     echo "Cmake base dir: " ${CMAKE_BASE_DIR}
     echo ""
+    echo "Let's execute cmake now: [cmake ${CMAKE_OPTIONS} -G "Unix Makefiles" ${CMAKE_BASE_DIR}]"
+    echo ""
 
     cmake ${CMAKE_OPTIONS} -G "Unix Makefiles" ${CMAKE_BASE_DIR}
 
+    echo ""
+    echo "Let's execute make now: [make  && ctest --no-compress-output -T Test]"
+    echo ""
+    
     make  && ctest --no-compress-output -T Test
-
 else
 
     echo "Cmake options: " ${CMAKE_OPTIONS}
     echo "Cmake base dir: " ${CMAKE_BASE_DIR}
     echo ""
 
+    echo ""
+    echo "Let's execute cmake now: [cmake ${CMAKE_OPTIONS} -G "Unix Makefiles" ${CMAKE_BASE_DIR}]"
+    echo ""
+    
     cmake ${CMAKE_OPTIONS} -G "Unix Makefiles" ${CMAKE_BASE_DIR}
 
+    echo ""
+    echo "Let's execute make now: [make]"
+    echo ""
+    
     make
-
 fi
 
 cd ${CMAKE_BASE_DIR}
