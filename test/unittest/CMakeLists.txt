@@ -16,7 +16,7 @@ message(STATUS "***** GORAN 2" ${CMAKE_CXX_FLAGS})
 message(STATUS "***** GORAN 3" ${GMOCK_CMAKE_ARGS})
 
 # there are some bugs in building in windows with msys2 gmock with pthread
-if(MSYS OR CYGWIN OR MINGW)
+if(MSYS OR CYGWIN OR MINGW OR MSYS2)
     set (gtest_disable_pthreads on)
 else()
     find_package(Threads REQUIRED)
@@ -27,8 +27,6 @@ if (CMAKE_VERSION VERSION_LESS 3.2)
 else()
     set(UPDATE_DISCONNECTED_IF_AVAILABLE "UPDATE_DISCONNECTED 1")
 endif()
-
-
 
 include(${PROJECT_SOURCE_DIR}/cmake/DownloadProject.cmake)
 download_project(
@@ -46,38 +44,12 @@ set(GMOCK_LIBRARIES gmock gmock_main)
 # when building with Visual Studio
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
-message(STATUS ">---- unittest/CmakeLists.txt ---")
-message(STATUS "gtest_SOURCE_DIR: ${gtest_SOURCE_DIR}")
-message(STATUS "gtest_BINARY_DIR: ${gtest_BINARY_DIR}")
-message(STATUS "googletest_SOURCE_DIR: ${googletest_SOURCE_DIR}")
-message(STATUS "googletest_BINARY_DIR: ${googletest_BINARY_DIR}")
-message(STATUS "           ")
-message(STATUS "gmock_SOURCE_DIR: ${gmock_SOURCE_DIR}")
-message(STATUS "gmock_BINARY_DIR: ${gmock_BINARY_DIR}")
-message(STATUS "googlemock_SOURCE_DIR: ${googlemock_SOURCE_DIR}")
-message(STATUS "googlemock_BINARY_DIR: ${googlemock_BINARY_DIR}")
-message(STATUS "           ")
-message(STATUS "<---- unittest/CmakeLists.txt ---")
-
 add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR})
 
 include_directories(${gtest_SOURCE_DIR}/include  ${gmock_SOURCE_DIR}/include)
 
 #add_subdirectory(stubs)
 add_subdirectory(processing)
-
-message(STATUS ">---- unittest/CmakeLists.txt ---")
-message(STATUS "gtest_SOURCE_DIR: ${gtest_SOURCE_DIR}")
-message(STATUS "gtest_BINARY_DIR: ${gtest_BINARY_DIR}")
-message(STATUS "googletest_SOURCE_DIR: ${googletest_SOURCE_DIR}")
-message(STATUS "googletest_BINARY_DIR: ${googletest_BINARY_DIR}")
-message(STATUS "           ")
-message(STATUS "gmock_SOURCE_DIR: ${gmock_SOURCE_DIR}")
-message(STATUS "gmock_BINARY_DIR: ${gmock_BINARY_DIR}")
-message(STATUS "googlemock_SOURCE_DIR: ${googlemock_SOURCE_DIR}")
-message(STATUS "googlemock_BINARY_DIR: ${googlemock_BINARY_DIR}")
-message(STATUS "           ")
-message(STATUS "<---- unittest/CmakeLists.txt ---")
 
 foreach(testSuite ${TEST_SUITES})
   add_executable(${testSuite} "${testSuite}.cpp")
@@ -95,3 +67,4 @@ endforeach(testSuite)
 #  setup_target_for_coverage(coverage_html ctest coverage)
 #  setup_target_for_coverage_cobertura(coverage ctest coverage)
 #endif()
+
