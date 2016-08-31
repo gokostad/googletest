@@ -1,3 +1,6 @@
+# this file is the same as cmake_setup.bash except it 
+# has unix style line ending
+
 #!/bin/bash
 
 set -e

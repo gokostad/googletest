@@ -1,4 +1,4 @@
-#!/bin/bash
+bin/bash
 
 set -e
 set -u
@@ -108,7 +108,16 @@ echo "######################################################################"
 echo "Toolchain: ${TOOLCHAIN}"
 echo "Target: ${TARGET}"
 
-BUILD_DIR_PREFIX=Build/cmake_shell
+BUILD_DIR_MAIN=Build
+if [ ! -d "$BUILD_DIR_MAIN" ]; then
+    mkdir $BUILD_DIR_MAIN
+    if [ ! -d "$BUILD_DIR_MAIN" ]; then
+        echo "Can not create build directory: " ${BUILD_DIR_MAIN}
+        exit 1
+    fi
+fi
+
+BUILD_DIR_PREFIX=$BUILD_DIR_MAIN/cmake_shell
 BUILD_DIR_POSTFIX=${TOOLCHAIN}
 
 # Get current directory
@@ -146,24 +155,38 @@ cd ${BUILD_DIR}
 
 # Create build environment
 if [ "${TARGET}" == "test" ]; then
-
     CMAKE_OPTIONS="${CMAKE_OPTIONS} -DCMAKE_BUILD_TYPE=Debug -Dtest=ON"
 
     echo "Cmake options: " ${CMAKE_OPTIONS}
     echo "Cmake base dir: " ${CMAKE_BASE_DIR}
     echo ""
+    echo "Let's execute cmake now: [cmake ${CMAKE_OPTIONS} -G "Unix Makefiles" ${CMAKE_BASE_DIR}]"
+    echo ""
 
     cmake ${CMAKE_OPTIONS} -G "Unix Makefiles" ${CMAKE_BASE_DIR}
+
+    echo ""
+    echo "Let's execute make now: [mingw32-make  && ctest --no-compress-output -T Test]"
+    echo ""
 
     mingw32-make  && ctest --no-compress-output -T Test
 
 else
 
+
     echo "Cmake options: " ${CMAKE_OPTIONS}
     echo "Cmake base dir: " ${CMAKE_BASE_DIR}
     echo ""
 
+    echo ""
+    echo "Let's execute cmake now: [cmake ${CMAKE_OPTIONS} -G "Unix Makefiles" ${CMAKE_BASE_DIR}]"
+    echo ""
+
     cmake ${CMAKE_OPTIONS} -G "Unix Makefiles" ${CMAKE_BASE_DIR}
+
+    echo ""
+    echo "Let's execute make now: [mingw32-make]"
+    echo ""
 
     mingw32-make
 

@@ -132,19 +132,30 @@ function(download_project)
     # Create and build a separate CMake project to carry out the download.
     # If we've already previously done these steps, they will not cause
     # anything to be updated, so extra rebuilds of the project won't occur.
-    message(STATUS "downloadproject.cmake::configure_file")
+
+    # Let's copy DownloadProject.CMakeLists.cmake.in into CMakeLists.txt
+    # in googletest-download folder
+    message(STATUS "> downloadproject.cmake::configure_file : DownloadProject.CMakeLists.cmake.in")
     configure_file("${_DownloadProjectDir}/DownloadProject.CMakeLists.cmake.in"
                    "${DL_ARGS_DOWNLOAD_DIR}/CMakeLists.txt")
 
-    message(STATUS "downloadproject.cmake::execute_process(COMMAND ${CMAKE_COMMAND} -G ${CMAKE_GENERATOR} .")
+    message(STATUS "> downloadproject.cmake::execute_process(COMMAND ${CMAKE_COMMAND} -G ${CMAKE_GENERATOR} .")
+    # Let's execute cmake on googletest-download folder, which will basicly generate
+    # makefiles (inside which it will be ExternalProject_Add from DownloadProject.CMakeLists.cmake.in)
     execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
                     ${OUTPUT_QUIET}
                     WORKING_DIRECTORY "${DL_ARGS_DOWNLOAD_DIR}"
     )
 
-    message(STATUS "downloadproject.cmake::execute_process(COMMAND ${CMAKE_COMMAND} --build .")
+    # Let's complite build process (downloading googletest for example) and unpack inside
+    # googletest_src. Build will be done from caller with execution of add_subdirectory
+    # and will use the same compiler flags as project (if we don't override)
+    message(STATUS "> downloadproject.cmake::execute_process(COMMAND ${CMAKE_COMMAND} --build .")
     execute_process(COMMAND ${CMAKE_COMMAND} --build .
                     ${OUTPUT_QUIET}
                     WORKING_DIRECTORY "${DL_ARGS_DOWNLOAD_DIR}"
     )
+
+    message(STATUS "< downloadproject.cmake:: All Done")
+
 endfunction()
