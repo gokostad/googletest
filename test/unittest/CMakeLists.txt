@@ -36,8 +36,6 @@ set(GMOCK_LIBRARIES gmock gmock_main)
 # when building with Visual Studio
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
-if (FALSE)
-
 add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR})
 
 # restore old flags
@@ -66,4 +64,3 @@ endforeach(testSuite)
 #  setup_target_for_coverage_cobertura(coverage ctest coverage)
 #endif()
 
-endif()
