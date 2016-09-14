@@ -1,7 +1,3 @@
-###
-## Copyright (c) 2015 General Electric Company. All rights reserved.
-##
-
 set(COMMON_C_CXX_FLAGS "\
 -Wall -Wextra -Werror -Wfatal-errors -Wshadow -Wpedantic -pedantic-errors -Wdouble-promotion \
 -Wswitch-default -Wswitch-enum\

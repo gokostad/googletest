@@ -1,7 +1,3 @@
-###
-## Copyright (c) 2016 General Electric Company. All rights reserved.
-##
-
 string(TOLOWER ${CMAKE_CXX_COMPILER_ID} COMPILER_ID_LOWER)
 
 set(TOOLCHAIN_GCC "gcc")
